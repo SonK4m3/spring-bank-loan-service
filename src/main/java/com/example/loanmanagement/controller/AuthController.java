@@ -8,10 +8,11 @@ import com.example.loanmanagement.model.payload.request.SignupRequest;
 import com.example.loanmanagement.model.payload.response.JwtResponse;
 import com.example.loanmanagement.model.payload.response.MessageResponse;
 import com.example.loanmanagement.repository.RoleRepository;
-import com.example.loanmanagement.repository.UserRepository;
 import com.example.loanmanagement.security.jwt.JwtUtils;
 import com.example.loanmanagement.security.services.UserDetailsImpl;
+import com.example.loanmanagement.service.MemberService;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,7 +36,7 @@ public class AuthController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    MemberService userService;
 
     @Autowired
     RoleRepository roleRepository;
@@ -45,8 +47,8 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -68,13 +70,13 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+        if (userService.existsByUsername(signUpRequest.getUsername()).isPresent()) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userService.existsByEmail(signUpRequest.getEmail()).isPresent()) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
@@ -110,8 +112,19 @@ public class AuthController {
         }
 
         user.setRoles(roles);
-        userRepository.save(user);
+        userService.createUser(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getUserByEmail(@PathParam("email") String email) {
+        Optional<User> userOptional = userService.existsByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return ResponseEntity.ok(user);
+        }
+
+        return ResponseEntity.ok(new MessageResponse("Could not find"));
     }
 }
