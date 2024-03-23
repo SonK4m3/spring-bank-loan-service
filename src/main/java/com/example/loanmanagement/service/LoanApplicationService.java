@@ -1,25 +1,35 @@
 package com.example.loanmanagement.service;
 
 import com.example.loanmanagement.entity.LoanApplication;
-import com.example.loanmanagement.entity.User;
-import com.example.loanmanagement.repository.LoanRepository;
+import com.example.loanmanagement.repository.LoanApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class LoanApplicationService {
-    @Autowired
-    private LoanRepository loanRepository;
+    private final LoanApplicationRepository loanApplicationRepository;
 
-    public LoanApplication applyForLoan(LoanApplication loanApplication) {
-        loanApplication.setReferenceNumber(generateReferenceNumber());
-        return loanRepository.save(loanApplication);
+    @Autowired
+    public LoanApplicationService(LoanApplicationRepository loanApplicationRepository) {
+        this.loanApplicationRepository = loanApplicationRepository;
     }
 
-    private String generateReferenceNumber() {
-        // Implement logic to generate a unique reference number
-        return "REF123456"; // Example placeholder
+    public List<LoanApplication> getAllLoanApplications() {
+        return loanApplicationRepository.findAll();
+    }
+
+    public LoanApplication getLoanApplicationById(Long id) {
+        return loanApplicationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Loan application not found with id: " + id));
+    }
+
+    public LoanApplication saveLoanApplication(LoanApplication loanApplication) {
+        return loanApplicationRepository.save(loanApplication);
+    }
+
+    public void deleteLoanApplication(Long id) {
+        loanApplicationRepository.deleteById(id);
     }
 }
