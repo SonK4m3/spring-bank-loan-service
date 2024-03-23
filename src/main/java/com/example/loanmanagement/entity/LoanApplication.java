@@ -9,30 +9,44 @@ public class LoanApplication {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "account_info_id")
+    private AccountInfo accountInfo;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "personal_info_id")
     private PersonalInfo personalInfo;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_info_id")
-    private AccountInfo accountInfo;
+    @JoinColumn(name = "contact_info_id")
+    private ContactInfo contactInfo;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "loan_info_id")
     private LoanInfo loanInfo;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "branch_info_id")
-    private BranchInfo branchInfo;
+    @JoinColumn(name = "capital_usage_id")
+    private CapitalUsage capitalUsage;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "loan_insurance_id")
+    private LoanInsurance loanInsurance;
 
     @Column(name = "reference_number")
     private String referenceNumber;
 
-    public LoanApplication(PersonalInfo personalInfo, AccountInfo accountInfo, LoanInfo loanInfo, BranchInfo branchInfo, String referenceNumber) {
-        this.personalInfo = personalInfo;
+    public LoanApplication() {
+
+    }
+
+    public LoanApplication(AccountInfo accountInfo, PersonalInfo personalInfo, ContactInfo contactInfo, LoanInfo loanInfo, CapitalUsage capitalUsage, LoanInsurance loanInsurance, String referenceNumber) {
         this.accountInfo = accountInfo;
+        this.personalInfo = personalInfo;
+        this.contactInfo = contactInfo;
         this.loanInfo = loanInfo;
-        this.branchInfo = branchInfo;
+        this.capitalUsage = capitalUsage;
+        this.loanInsurance = loanInsurance;
         this.referenceNumber = referenceNumber;
     }
 
@@ -44,6 +58,14 @@ public class LoanApplication {
         this.id = id;
     }
 
+    public AccountInfo getAccountInfo() {
+        return accountInfo;
+    }
+
+    public void setAccountInfo(AccountInfo accountInfo) {
+        this.accountInfo = accountInfo;
+    }
+
     public PersonalInfo getPersonalInfo() {
         return personalInfo;
     }
@@ -52,12 +74,12 @@ public class LoanApplication {
         this.personalInfo = personalInfo;
     }
 
-    public AccountInfo getAccountInfo() {
-        return accountInfo;
+    public ContactInfo getContactInfo() {
+        return contactInfo;
     }
 
-    public void setAccountInfo(AccountInfo accountInfo) {
-        this.accountInfo = accountInfo;
+    public void setContactInfo(ContactInfo contactInfo) {
+        this.contactInfo = contactInfo;
     }
 
     public LoanInfo getLoanInfo() {
@@ -68,12 +90,20 @@ public class LoanApplication {
         this.loanInfo = loanInfo;
     }
 
-    public BranchInfo getBranchInfo() {
-        return branchInfo;
+    public CapitalUsage getCapitalUsage() {
+        return capitalUsage;
     }
 
-    public void setBranchInfo(BranchInfo branchInfo) {
-        this.branchInfo = branchInfo;
+    public void setCapitalUsage(CapitalUsage capitalUsage) {
+        this.capitalUsage = capitalUsage;
+    }
+
+    public LoanInsurance getLoanInsurance() {
+        return loanInsurance;
+    }
+
+    public void setLoanInsurance(LoanInsurance loanInsurance) {
+        this.loanInsurance = loanInsurance;
     }
 
     public String getReferenceNumber() {

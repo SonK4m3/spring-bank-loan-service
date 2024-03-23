@@ -3,6 +3,7 @@ package com.example.loanmanagement.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.Date;
@@ -17,40 +18,43 @@ public class PersonalInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotNull
     @Size(max = 120)
     private String firstName;
 
-    @NotBlank
+    @NotNull
     @Size(max = 120)
     private String lastName;
 
-    @NotBlank
+    @NotNull
     private Date dob;
 
-    @NotBlank
-    private EGender gender;
+    @NotNull
+    private String gender;
 
-    @NotBlank
     @Size(max = 12)
+    @NotNull
     @Column(name = "id_number")
     private String idNumber;
 
-    @NotBlank
     @Size(max = 10)
+    @NotNull
     private String phone;
 
-    @NotBlank
     @Size(max = 120)
     @Email
+    @NotNull
     private String email;
 
-    @NotBlank
     @Size(max = 120)
+    @NotNull
     private String address;
 
-    public PersonalInfo(Long id, String firstName, String lastName, Date dob, EGender gender, String idNumber, String phone, String email, String address) {
-        this.id = id;
+    public PersonalInfo() {
+
+    }
+
+    public PersonalInfo(@NotNull String firstName, @NotNull String lastName, @NotNull Date dob, @NotNull String gender, @NotNull String idNumber, @NotNull String phone, @NotNull String email, @NotNull String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
@@ -93,11 +97,11 @@ public class PersonalInfo {
         this.dob = dob;
     }
 
-    public EGender getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(EGender gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 

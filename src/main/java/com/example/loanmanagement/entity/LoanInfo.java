@@ -1,6 +1,8 @@
 package com.example.loanmanagement.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "loan_info")
@@ -9,18 +11,25 @@ public class LoanInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private ELoanPurpose purpose;
+    @NotNull
+    @Column(name = "loan_amount")
     private double loanAmount;
-    private ELoanTerm term;
-    private double interestRate;
-    private EPaymentMethod paymentMethod;
 
-    public LoanInfo(ELoanPurpose purpose, double loanAmount, ELoanTerm term, double interestRate, EPaymentMethod paymentMethod) {
-        this.purpose = purpose;
+    @NotNull
+    @Column(name = "loan_term")
+    private int loanTerm;
+
+    @NotNull
+    @Column(name = "interest_rate")
+    private double interestRate;
+
+    public LoanInfo() {
+    }
+
+    public LoanInfo(double loanAmount, int loanTerm, double interestRate) {
         this.loanAmount = loanAmount;
-        this.term = term;
+        this.loanTerm = loanTerm;
         this.interestRate = interestRate;
-        this.paymentMethod = paymentMethod;
     }
 
     public Long getId() {
@@ -31,14 +40,6 @@ public class LoanInfo {
         this.id = id;
     }
 
-    public ELoanPurpose getPurpose() {
-        return purpose;
-    }
-
-    public void setPurpose(ELoanPurpose purpose) {
-        this.purpose = purpose;
-    }
-
     public double getLoanAmount() {
         return loanAmount;
     }
@@ -47,12 +48,12 @@ public class LoanInfo {
         this.loanAmount = loanAmount;
     }
 
-    public ELoanTerm getTerm() {
-        return term;
+    public int getLoanTerm() {
+        return loanTerm;
     }
 
-    public void setTerm(ELoanTerm term) {
-        this.term = term;
+    public void setLoanTerm(int loanTerm) {
+        this.loanTerm = loanTerm;
     }
 
     public double getInterestRate() {
@@ -61,13 +62,5 @@ public class LoanInfo {
 
     public void setInterestRate(double interestRate) {
         this.interestRate = interestRate;
-    }
-
-    public EPaymentMethod getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(EPaymentMethod paymentMethod) {
-        this.paymentMethod = paymentMethod;
     }
 }

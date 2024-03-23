@@ -31,6 +31,10 @@ public class AccountInfo {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @NotBlank
+    @Column(name = "address")
+    private String address;
+
     @ManyToOne
     @JoinColumn(name = "branch_info_id")
     private BranchInfo branchInfo;
@@ -38,11 +42,12 @@ public class AccountInfo {
     public AccountInfo() {
     }
 
-    public AccountInfo(String accountNumber, String legal, String emailAddress, String phoneNumber, BranchInfo branchInfo) {
+    public AccountInfo(String accountNumber, String legal, String emailAddress, String phoneNumber, String address, BranchInfo branchInfo) {
         this.accountNumber = accountNumber;
         this.legal = legal;
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
+        this.address = address;
         this.branchInfo = branchInfo;
     }
 
@@ -92,5 +97,13 @@ public class AccountInfo {
 
     public void setBranchInfo(BranchInfo branchInfo) {
         this.branchInfo = branchInfo;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
