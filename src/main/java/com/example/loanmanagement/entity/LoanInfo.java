@@ -20,16 +20,24 @@ public class LoanInfo {
     private int loanTerm;
 
     @NotNull
-    @Column(name = "interest_rate")
-    private double interestRate;
+    @Column(name = "current_earning")
+    private double currentEearning;
+
+    @Column(name = "loan_interest_rate")
+    private double loanInterestRate = 0.06; // Default value: 6%
+
+    @Column(name = "interest_rate_margin")
+    private double interestRateMargin = 0.04; // Default value: 4%
 
     public LoanInfo() {
     }
 
-    public LoanInfo(double loanAmount, int loanTerm, double interestRate) {
+    public LoanInfo(@NotNull double loanAmount, @NotNull int loanTerm, @NotNull double currentEearning, double loanInterestRate, double interestRateMargin) {
         this.loanAmount = loanAmount;
         this.loanTerm = loanTerm;
-        this.interestRate = interestRate;
+        this.currentEearning = currentEearning;
+        this.loanInterestRate = loanInterestRate;
+        this.interestRateMargin = interestRateMargin;
     }
 
     public Long getId() {
@@ -56,11 +64,27 @@ public class LoanInfo {
         this.loanTerm = loanTerm;
     }
 
-    public double getInterestRate() {
-        return interestRate;
+    public double getCurrentEearning() {
+        return currentEearning;
     }
 
-    public void setInterestRate(double interestRate) {
-        this.interestRate = interestRate;
+    public void setCurrentEearning(double currentEearning) {
+        this.currentEearning = currentEearning;
+    }
+
+    public double getLoanInterestRate() {
+        return loanInterestRate;
+    }
+
+    public void setLoanInterestRate(double loanInterestRate) {
+        this.loanInterestRate = loanInterestRate;
+    }
+
+    public double getInterestRateMargin() {
+        return interestRateMargin;
+    }
+
+    public void setInterestRateMargin(double interestRateMargin) {
+        this.interestRateMargin = interestRateMargin;
     }
 }

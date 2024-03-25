@@ -1,6 +1,5 @@
 package com.example.loanmanagement.entity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -14,13 +13,19 @@ public class CapitalUsage {
     @Column(name = "total_capital")
     private double totalCapital;
 
-    // Add other fields as needed
+    @Column(name = "purpose")
+    private String purpose;
+
+    @Column(name = "source")
+    private String source;
 
     public CapitalUsage() {
     }
 
-    public CapitalUsage(double totalCapital) {
+    public CapitalUsage(@NotNull double totalCapital, String purpose, String source) {
         this.totalCapital = totalCapital;
+        this.purpose = purpose;
+        this.source = source;
     }
 
     public Long getId() {
@@ -39,4 +44,19 @@ public class CapitalUsage {
         this.totalCapital = totalCapital;
     }
 
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
 }

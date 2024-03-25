@@ -18,8 +18,12 @@ public class LoanApplication {
     private PersonalInfo personalInfo;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "contact_info_id")
-    private ContactInfo contactInfo;
+    @JoinColumn(name = "contact_info_1_id")
+    private ContactInfo contactInfo1;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "contact_info_2_id")
+    private ContactInfo contactInfo2;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "loan_info_id")
@@ -40,10 +44,11 @@ public class LoanApplication {
 
     }
 
-    public LoanApplication(AccountInfo accountInfo, PersonalInfo personalInfo, ContactInfo contactInfo, LoanInfo loanInfo, CapitalUsage capitalUsage, LoanInsurance loanInsurance, String referenceNumber) {
+    public LoanApplication(AccountInfo accountInfo, PersonalInfo personalInfo, ContactInfo contactInfo1, ContactInfo contactInfo2,LoanInfo loanInfo, CapitalUsage capitalUsage, LoanInsurance loanInsurance, String referenceNumber) {
         this.accountInfo = accountInfo;
         this.personalInfo = personalInfo;
-        this.contactInfo = contactInfo;
+        this.contactInfo1 = contactInfo1;
+        this.contactInfo2 = contactInfo2;
         this.loanInfo = loanInfo;
         this.capitalUsage = capitalUsage;
         this.loanInsurance = loanInsurance;
@@ -74,12 +79,20 @@ public class LoanApplication {
         this.personalInfo = personalInfo;
     }
 
-    public ContactInfo getContactInfo() {
-        return contactInfo;
+    public ContactInfo getContactInfo1() {
+        return contactInfo1;
     }
 
-    public void setContactInfo(ContactInfo contactInfo) {
-        this.contactInfo = contactInfo;
+    public void setContactInfo1(ContactInfo contactInfo) {
+        this.contactInfo1 = contactInfo;
+    }
+
+    public ContactInfo getContactInfo2() {
+        return contactInfo2;
+    }
+
+    public void setContactInfo2(ContactInfo contactInfo) {
+        this.contactInfo2 = contactInfo;
     }
 
     public LoanInfo getLoanInfo() {
