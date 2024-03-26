@@ -3,6 +3,7 @@ package com.example.loanmanagement.controller;
 import com.example.loanmanagement.entity.EInterestCalculator;
 import com.example.loanmanagement.entity.ELoanStatus;
 import com.example.loanmanagement.entity.LoanApplication;
+import com.example.loanmanagement.model.payload.response.InterestCalculationResponse;
 import com.example.loanmanagement.model.payload.response.MessageResponse;
 import com.example.loanmanagement.service.LoanApplicationService;
 import jakarta.websocket.server.PathParam;
@@ -51,7 +52,7 @@ public class LoanApplicationController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/interest/{id}")
+    @GetMapping("/interest/loan/{id}")
     public ResponseEntity<MessageResponse> interestCalculation(@PathVariable Long id, @PathParam("type") EInterestCalculator type) {
         double interest = loanApplicationService.calculateInterest(id, type);
         MessageResponse messageResponse = new MessageResponse("" + interest);
@@ -66,5 +67,17 @@ public class LoanApplicationController {
     @PutMapping("/{applicationId}/deny")
     public void denyLoanApplication(@PathVariable Long applicationId) {
         loanApplicationService.updateLoanStatus(applicationId, ELoanStatus.REJECTED);
+    }
+
+    @GetMapping("/interest/based/{id}")
+    public ResponseEntity<InterestCalculationResponse> basedInterestCalculation(@PathVariable Long id) {
+        InterestCalculationResponse basedInterestCalculationResponse = loanApplicationService.calculateBasedInterestMonthly(id);
+        return new ResponseEntity<>(basedInterestCalculationResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/interest/decrease/{id}")
+    public ResponseEntity<List<InterestCalculationResponse>> decreaseInterestCalculation(@PathVariable Long id) {
+        List<InterestCalculationResponse> basedInterestCalculationResponses = loanApplicationService.calculateDecreasedInterestMonthly(id);
+        return new ResponseEntity<>(basedInterestCalculationResponses, HttpStatus.OK);
     }
 }
