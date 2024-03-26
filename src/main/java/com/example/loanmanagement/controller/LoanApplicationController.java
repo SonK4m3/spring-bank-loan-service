@@ -1,6 +1,7 @@
 package com.example.loanmanagement.controller;
 
 import com.example.loanmanagement.entity.EInterestCalculator;
+import com.example.loanmanagement.entity.ELoanStatus;
 import com.example.loanmanagement.entity.LoanApplication;
 import com.example.loanmanagement.model.payload.response.MessageResponse;
 import com.example.loanmanagement.service.LoanApplicationService;
@@ -55,5 +56,15 @@ public class LoanApplicationController {
         double interest = loanApplicationService.calculateInterest(id, type);
         MessageResponse messageResponse = new MessageResponse("" + interest);
         return new ResponseEntity<>(messageResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("/{applicationId}/approve")
+    public void approveLoanApplication(@PathVariable Long applicationId) {
+        loanApplicationService.updateLoanStatus(applicationId, ELoanStatus.APPROVED);
+    }
+
+    @PutMapping("/{applicationId}/deny")
+    public void denyLoanApplication(@PathVariable Long applicationId) {
+        loanApplicationService.updateLoanStatus(applicationId, ELoanStatus.REJECTED);
     }
 }

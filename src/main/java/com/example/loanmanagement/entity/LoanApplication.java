@@ -37,6 +37,10 @@ public class LoanApplication {
     @JoinColumn(name = "loan_insurance_id")
     private LoanInsurance loanInsurance;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private ELoanStatus status = ELoanStatus.PENDING;
+
     @Column(name = "reference_number")
     private String referenceNumber;
 
@@ -44,7 +48,7 @@ public class LoanApplication {
 
     }
 
-    public LoanApplication(AccountInfo accountInfo, PersonalInfo personalInfo, ContactInfo contactInfo1, ContactInfo contactInfo2,LoanInfo loanInfo, CapitalUsage capitalUsage, LoanInsurance loanInsurance, String referenceNumber) {
+    public LoanApplication(AccountInfo accountInfo, PersonalInfo personalInfo, ContactInfo contactInfo1, ContactInfo contactInfo2,LoanInfo loanInfo, CapitalUsage capitalUsage, LoanInsurance loanInsurance, ELoanStatus status, String referenceNumber) {
         this.accountInfo = accountInfo;
         this.personalInfo = personalInfo;
         this.contactInfo1 = contactInfo1;
@@ -52,6 +56,7 @@ public class LoanApplication {
         this.loanInfo = loanInfo;
         this.capitalUsage = capitalUsage;
         this.loanInsurance = loanInsurance;
+        this.status = status;
         this.referenceNumber = referenceNumber;
     }
 
@@ -125,5 +130,13 @@ public class LoanApplication {
 
     public void setReferenceNumber(String referenceNumber) {
         this.referenceNumber = referenceNumber;
+    }
+
+    public ELoanStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ELoanStatus status) {
+        this.status = status;
     }
 }

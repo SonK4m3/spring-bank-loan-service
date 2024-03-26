@@ -1,6 +1,7 @@
 package com.example.loanmanagement.service;
 
 import com.example.loanmanagement.entity.EInterestCalculator;
+import com.example.loanmanagement.entity.ELoanStatus;
 import com.example.loanmanagement.entity.LoanApplication;
 import com.example.loanmanagement.entity.LoanInfo;
 import com.example.loanmanagement.repository.LoanApplicationRepository;
@@ -58,5 +59,17 @@ public class LoanApplicationService {
         int term = loanInfo.getLoanTerm();
 
         return principal * (Math.pow((1 + rate), term)) - principal;
+    }
+
+    public void updateLoanStatus(Long loanApplicationId, ELoanStatus newStatus) {
+        // Retrieve the loan application
+        LoanApplication loanApplication = loanApplicationRepository.findById(loanApplicationId)
+                .orElseThrow(() -> new IllegalArgumentException("Loan Application not found"));
+
+        // Update the status
+        loanApplication.setStatus(newStatus);
+
+        // Save the changes to the database
+        loanApplicationRepository.save(loanApplication);
     }
 }

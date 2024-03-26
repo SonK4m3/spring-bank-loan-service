@@ -21,9 +21,9 @@ public class LoanDisbursement {
     @Column(name = "monthly_repayment_day", nullable = false)
     private int monthlyRepaymentDay;
 
-    @ManyToOne
-    @JoinColumn(name = "disbursement_account_id", nullable = false)
-    private AccountInfo disbursementAccount;
+//    @ManyToOne
+//    @JoinColumn(name = "disbursement_account_id", nullable = false)
+//    private AccountInfo disbursementAccount;
 
     public LoanDisbursement() {
     }
@@ -32,7 +32,7 @@ public class LoanDisbursement {
         this.loanApplication = loanApplication;
         this.disbursementDate = disbursementDate;
         this.monthlyRepaymentDay = monthlyRepaymentDay;
-        this.disbursementAccount = disbursementAccount;
+//        this.disbursementAccount = disbursementAccount;
     }
 
     public Long getId() {
@@ -67,11 +67,11 @@ public class LoanDisbursement {
         this.monthlyRepaymentDay = monthlyRepaymentDay;
     }
 
-    public AccountInfo getDisbursementAccount() {
-        return disbursementAccount;
-    }
-
-    public void setDisbursementAccount(AccountInfo disbursementAccount) {
-        this.disbursementAccount = disbursementAccount;
-    }
+//    public AccountInfo getDisbursementAccount() {
+//        return disbursementAccount;
+//    }
+//
+//    public void setDisbursementAccount(AccountInfo disbursementAccount) {
+//        this.disbursementAccount = disbursementAccount;
+//    }
 }
