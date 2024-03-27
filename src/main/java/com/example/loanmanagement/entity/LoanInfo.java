@@ -1,8 +1,7 @@
 package com.example.loanmanagement.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "loan_info")
@@ -12,21 +11,28 @@ public class LoanInfo {
     private Long id;
 
     @NotNull
+    @Positive
     @Column(name = "loan_amount")
     private double loanAmount;
 
     @NotNull
+    @Positive
     @Column(name = "loan_term")
     private int loanTerm;
 
     @NotNull
+    @Positive
     @Column(name = "current_earning")
     private double currentEearning;
 
     @Column(name = "loan_interest_rate")
+    @Min(0)
+    @Max(100)
     private double loanInterestRate = 0.06; // Default value: 6%
 
     @Column(name = "interest_rate_margin")
+    @Min(0)
+    @Max(100)
     private double interestRateMargin = 0.04; // Default value: 4%
 
     public LoanInfo() {

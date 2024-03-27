@@ -1,6 +1,7 @@
 package com.example.loanmanagement.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "capital_usage")
@@ -10,6 +11,7 @@ public class CapitalUsage {
     private Long id;
 
     @NotNull
+    @Positive
     @Column(name = "total_capital")
     private double totalCapital;
 
