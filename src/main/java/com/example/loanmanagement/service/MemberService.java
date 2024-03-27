@@ -2,6 +2,7 @@ package com.example.loanmanagement.service;
 
 import com.example.loanmanagement.entity.User;
 import com.example.loanmanagement.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +23,13 @@ public class MemberService {
 
     public Optional<User> existsByEmail(String email) {
         return memberRepository.findByEmail(email);
+    }
+
+    @Transactional
+    public void updateIsDeclared(Long userId) {
+        User user = memberRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        user.setDeclared(true);
+        memberRepository.save(user);
     }
 }

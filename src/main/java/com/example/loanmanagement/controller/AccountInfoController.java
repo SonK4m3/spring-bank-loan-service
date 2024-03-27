@@ -2,6 +2,7 @@ package com.example.loanmanagement.controller;
 
 import com.example.loanmanagement.entity.AccountInfo;
 import com.example.loanmanagement.service.AccountInfoService;
+import com.example.loanmanagement.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,9 @@ import java.util.Optional;
 public class AccountInfoController {
     @Autowired
     private AccountInfoService accountInfoService;
+
+    @Autowired
+    private MemberService memberService;
 
     @GetMapping
     public ResponseEntity<List<AccountInfo>> getAllAccountInfos() {
@@ -30,7 +34,9 @@ public class AccountInfoController {
     }
 
     @PostMapping
-    public ResponseEntity<AccountInfo> createAccountInfo(@RequestBody AccountInfo accountInfo) {
+    public ResponseEntity<AccountInfo> createAccountInfo(@RequestBody AccountInfo accountInfo, @RequestParam("user_id") Long user_id) {
+        memberService.updateIsDeclared(user_id);
+
         AccountInfo createdAccountInfo = accountInfoService.createOrUpdateAccountInfo(accountInfo);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAccountInfo);
     }
