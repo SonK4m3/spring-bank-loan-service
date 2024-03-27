@@ -1,6 +1,8 @@
 package com.example.loanmanagement.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 import java.util.Date;
 
@@ -18,8 +20,11 @@ public class LoanDisbursement {
     @Column(name = "disbursement_date", nullable = false)
     private Date disbursementDate;
 
+
+    @Min(1)
+    @Max(31)
     @Column(name = "monthly_repayment_day", nullable = false)
-    private int monthlyRepaymentDay;
+    private int monthlyRepaymentDay = 10;
 
 //    @ManyToOne
 //    @JoinColumn(name = "disbursement_account_id", nullable = false)

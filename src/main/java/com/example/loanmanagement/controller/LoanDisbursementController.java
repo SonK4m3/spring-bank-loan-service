@@ -37,7 +37,7 @@ public class LoanDisbursementController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LoanDisbursement> updateLoanDisbursement(@PathVariable Long id, @RequestBody LoanDisbursement updatedDisbursement) {
+    public ResponseEntity<LoanDisbursement> updateLoanDisbursement(@PathVariable Long id, @RequestBody LoanDisbursement updatedDisbursement) {stat
         LoanDisbursement updated = loanDisbursementService.createLoanDisbursement(updatedDisbursement);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
