@@ -39,16 +39,21 @@ public class AccountInfo {
     @JoinColumn(name = "branch_info_id")
     private BranchInfo branchInfo;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public AccountInfo() {
     }
 
-    public AccountInfo(String accountNumber, String legal, String emailAddress, String phoneNumber, String address, BranchInfo branchInfo) {
+    public AccountInfo(String accountNumber, String legal, String emailAddress, String phoneNumber, String address, BranchInfo branchInfo, User user) {
         this.accountNumber = accountNumber;
         this.legal = legal;
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.branchInfo = branchInfo;
+        this.user = user;
     }
 
     public Long getId() {
@@ -105,5 +110,13 @@ public class AccountInfo {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

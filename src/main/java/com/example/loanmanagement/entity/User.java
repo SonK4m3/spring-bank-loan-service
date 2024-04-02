@@ -34,7 +34,7 @@ public class User implements Serializable {
     private String password;
 
     @Column(name = "is_declared")
-    private boolean isDeclared = false;
+    private int isDeclared = 0;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
@@ -49,7 +49,6 @@ public class User implements Serializable {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.isDeclared = false;
     }
 
     public Long getId() {
@@ -92,11 +91,11 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
-    public boolean isDeclared() {
+    public int getIsDeclared() {
         return isDeclared;
     }
 
-    public void setDeclared(boolean declared) {
-        isDeclared = declared;
+    public void setIsDeclared(int isDeclared) {
+        this.isDeclared = isDeclared;
     }
 }

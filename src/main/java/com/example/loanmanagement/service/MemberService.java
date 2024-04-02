@@ -29,7 +29,7 @@ public class MemberService {
     public void updateIsDeclared(Long userId) {
         User user = memberRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
-        user.setDeclared(true);
+        user.setIsDeclared(1);
         memberRepository.save(user);
     }
 }
