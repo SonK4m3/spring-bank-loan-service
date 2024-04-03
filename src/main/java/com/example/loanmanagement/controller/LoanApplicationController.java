@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/loanApplications")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LoanApplicationController {
 
     @Autowired

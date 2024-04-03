@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/accountInfos")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AccountInfoController {
     @Autowired
     private AccountInfoService accountInfoService;

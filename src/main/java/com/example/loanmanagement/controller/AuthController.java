@@ -1,6 +1,7 @@
 package com.example.loanmanagement.controller;
 
 import com.example.loanmanagement.entity.ERole;
+import com.example.loanmanagement.entity.ESignupError;
 import com.example.loanmanagement.entity.Role;
 import com.example.loanmanagement.entity.User;
 import com.example.loanmanagement.model.payload.request.LoginRequest;
@@ -20,12 +21,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -50,6 +49,15 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
 
+        Optional<User> existUser = userService.existsByUsername(loginRequest.getUsername());
+        if (existUser.isEmpty()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("USERNAME_NOT_EXIST"));
+        }
+
+        if (!encoder.matches(loginRequest.getPassword(),  existUser.get().getPassword())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("PASSWORD_INCORRECT"));
+        }
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -65,6 +73,7 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
+                userDetails.getIsDeclared(),
                 roles));
     }
 
@@ -73,13 +82,13 @@ public class AuthController {
         if (userService.existsByUsername(signUpRequest.getUsername()).isPresent()) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+                    .body(new MessageResponse(ESignupError.USERNAME_EXIST.toString()));
         }
 
         if (userService.existsByEmail(signUpRequest.getEmail()).isPresent()) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+                    .body(new MessageResponse(ESignupError.EMAIL_EXIST.toString()));
         }
 
         // Create new user's account

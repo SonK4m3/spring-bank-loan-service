@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/loan-disbursements")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LoanDisbursementController {
 
     @Autowired

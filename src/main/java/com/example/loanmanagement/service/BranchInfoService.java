@@ -28,4 +28,8 @@ public class BranchInfoService {
     public void deleteBranchInfoById(Long id) {
         branchInfoRepository.deleteById(id);
     }
+
+    public List<BranchInfo> findByProvinceId(Long provinceId) {
+        return branchInfoRepository.findByProvince_Id(provinceId);
+    }
 }

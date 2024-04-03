@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/provinces")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ProvinceController {
     @Autowired
     private ProvinceService provinceService;
