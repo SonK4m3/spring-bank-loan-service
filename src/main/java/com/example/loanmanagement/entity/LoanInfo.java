@@ -21,9 +21,8 @@ public class LoanInfo {
     private int loanTerm;
 
     @NotNull
-    @Positive
     @Column(name = "current_earning")
-    private double currentEearning;
+    private double currentEarning;
 
     @Column(name = "loan_interest_rate")
     @Min(0)
@@ -41,7 +40,7 @@ public class LoanInfo {
     public LoanInfo(@NotNull double loanAmount, @NotNull int loanTerm, @NotNull double currentEearning, double loanInterestRate, double interestRateMargin) {
         this.loanAmount = loanAmount;
         this.loanTerm = loanTerm;
-        this.currentEearning = currentEearning;
+        this.currentEarning = currentEearning;
         this.loanInterestRate = loanInterestRate;
         this.interestRateMargin = interestRateMargin;
     }
@@ -70,12 +69,12 @@ public class LoanInfo {
         this.loanTerm = loanTerm;
     }
 
-    public double getCurrentEearning() {
-        return currentEearning;
+    public double getCurrentEarning() {
+        return currentEarning;
     }
 
-    public void setCurrentEearning(double currentEearning) {
-        this.currentEearning = currentEearning;
+    public void setCurrentEarning(double currentEarning) {
+        this.currentEarning = currentEarning;
     }
 
     public double getLoanInterestRate() {

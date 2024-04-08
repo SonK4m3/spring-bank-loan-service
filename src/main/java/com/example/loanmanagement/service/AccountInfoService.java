@@ -36,4 +36,8 @@ public class AccountInfoService {
     public void deleteAccountInfoById(Long id) {
         accountInfoRepository.deleteById(id);
     }
+
+    public Optional<AccountInfo> getAccountInfoByUserId(Long userId) {
+        return accountInfoRepository.findByUserId(userId);
+    }
 }

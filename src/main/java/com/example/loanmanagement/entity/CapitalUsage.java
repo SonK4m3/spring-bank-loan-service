@@ -11,7 +11,6 @@ public class CapitalUsage {
     private Long id;
 
     @NotNull
-    @Positive
     @Column(name = "total_capital")
     private double totalCapital;
 

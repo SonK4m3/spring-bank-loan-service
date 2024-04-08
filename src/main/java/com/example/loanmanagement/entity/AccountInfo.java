@@ -1,5 +1,6 @@
 package com.example.loanmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -41,6 +42,7 @@ public class AccountInfo {
 
     @OneToOne
     @JoinColumn(name = "user_id")
+//    @JsonIgnore
     private User user;
 
     public AccountInfo() {

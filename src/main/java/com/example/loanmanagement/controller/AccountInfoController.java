@@ -1,6 +1,7 @@
 package com.example.loanmanagement.controller;
 
 import com.example.loanmanagement.entity.AccountInfo;
+import com.example.loanmanagement.model.payload.response.MessageResponse;
 import com.example.loanmanagement.service.AccountInfoService;
 import com.example.loanmanagement.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +54,16 @@ public class AccountInfoController {
     public ResponseEntity<Void> deleteAccountInfo(@PathVariable Long id) {
         accountInfoService.deleteAccountInfoById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getAccountInfoByUserId(@PathVariable Long userId) {
+        Optional<AccountInfo> accountInfo = accountInfoService.getAccountInfoByUserId(userId);
+
+        if(accountInfo.isEmpty()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("User hadn't declared account information"));
+        }
+
+        return ResponseEntity.ok().body(accountInfo.get());
     }
 }

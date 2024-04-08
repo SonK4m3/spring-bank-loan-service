@@ -31,6 +31,7 @@ public class LoanApplicationService {
     }
 
     public LoanApplication saveLoanApplication(LoanApplication loanApplication) {
+        loanApplication.setStatus(ELoanStatus.PENDING);
         return loanApplicationRepository.save(loanApplication);
     }
 
