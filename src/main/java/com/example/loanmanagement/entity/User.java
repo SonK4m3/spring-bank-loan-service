@@ -1,6 +1,7 @@
 package com.example.loanmanagement.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -35,8 +36,8 @@ public class User implements Serializable {
     @JsonIgnore
     private String password;
 
-    @Column(name = "is_declared")
-    private int isDeclared = 0;
+    @Column(name = "is_declared", columnDefinition = "integer default 0")
+    private Integer isDeclared;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
@@ -51,6 +52,7 @@ public class User implements Serializable {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.isDeclared = 0;
     }
 
     public Long getId() {
@@ -93,11 +95,11 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
-    public int getIsDeclared() {
+    public Integer getIsDeclared() {
         return isDeclared;
     }
 
-    public void setIsDeclared(int isDeclared) {
+    public void setIsDeclared(Integer isDeclared) {
         this.isDeclared = isDeclared;
     }
 }

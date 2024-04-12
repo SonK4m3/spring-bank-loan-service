@@ -54,7 +54,7 @@ public class AuthController {
             return ResponseEntity.badRequest().body(new MessageResponse("USERNAME_NOT_EXIST"));
         }
 
-        if (!encoder.matches(loginRequest.getPassword(),  existUser.get().getPassword())) {
+        if (!encoder.matches(loginRequest.getPassword(), existUser.get().getPassword())) {
             return ResponseEntity.badRequest().body(new MessageResponse("PASSWORD_INCORRECT"));
         }
 
@@ -79,6 +79,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+        System.out.println("Register: " + userService.existsByUsername(signUpRequest.getUsername()).isPresent());
         if (userService.existsByUsername(signUpRequest.getUsername()).isPresent()) {
             return ResponseEntity
                     .badRequest()
