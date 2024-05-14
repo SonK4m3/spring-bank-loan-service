@@ -1,14 +1,24 @@
 package com.example.loanmanagement.model.payload.response;
 
 public class InterestCalculationResponse {
+    private double remainAmount;
     private double basedAmount;
     private double interestAmount;
     private double total;
 
-    public InterestCalculationResponse(double basedAmount, double interestAmount) {
+    public InterestCalculationResponse(double remainAmount, double basedAmount, double interestAmount) {
+        this.remainAmount = remainAmount;
         this.basedAmount = basedAmount;
         this.interestAmount = interestAmount;
         this.total = basedAmount + interestAmount;
+    }
+
+    public double getRemainAmount() {
+        return remainAmount;
+    }
+
+    public void setRemainAmount(double remainAmount) {
+        this.remainAmount = remainAmount;
     }
 
     public double getBasedAmount() {

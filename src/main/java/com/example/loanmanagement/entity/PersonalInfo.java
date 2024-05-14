@@ -7,48 +7,42 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "personal_info",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "id_number"),
-        })
+@Table(name = "personal_info")
 public class PersonalInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Size(max = 120)
     private String firstName;
 
-    @NotNull
     @Size(max = 120)
     private String lastName;
 
-    @NotNull
     private Date dob;
 
-    @NotNull
     private String gender;
 
     @Size(max = 12)
-    @NotNull
     @Column(name = "id_number")
     private String idNumber;
 
     @Size(max = 10)
-    @NotNull
     private String phone;
 
     @Size(max = 120)
     @Email
-    @NotNull
     private String email;
 
     @Size(max = 120)
-    @NotNull
     private String address;
+
+    @OneToMany(mappedBy = "personalInfo")
+    private Set<LoanApplication> loanApplications = new HashSet<>();
 
     public PersonalInfo() {
 

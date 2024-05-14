@@ -1,18 +1,23 @@
 package com.example.loanmanagement.controller;
 
+import com.example.loanmanagement.entity.AccountInfo;
 import com.example.loanmanagement.entity.EInterestCalculator;
 import com.example.loanmanagement.entity.ELoanStatus;
 import com.example.loanmanagement.entity.LoanApplication;
 import com.example.loanmanagement.model.payload.response.InterestCalculationResponse;
 import com.example.loanmanagement.model.payload.response.MessageResponse;
+import com.example.loanmanagement.service.AccountInfoService;
 import com.example.loanmanagement.service.LoanApplicationService;
+import com.example.loanmanagement.service.PersonalInfoService;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/loanApplications")
@@ -21,6 +26,10 @@ public class LoanApplicationController {
 
     @Autowired
     private LoanApplicationService loanApplicationService;
+    @Autowired
+    private PersonalInfoService personalInfoService;
+    @Autowired
+    private AccountInfoService accountInfoService;
 
     @GetMapping
     public ResponseEntity<List<LoanApplication>> getAllLoanApplications() {
@@ -35,8 +44,17 @@ public class LoanApplicationController {
     }
 
     @PostMapping
-    public ResponseEntity<LoanApplication> createLoanApplication(@RequestBody LoanApplication loanApplication) {
-        LoanApplication createdLoanApplication = loanApplicationService.saveLoanApplication(loanApplication);
+    public ResponseEntity<?> createLoanApplication(@RequestBody LoanApplication loanApplication) {
+        System.out.println("createLoanApplication: " + loanApplication.toString());
+        if (loanApplication.getPersonalInfo().getId() > 0) {
+            if (!personalInfoService.isIdNumberUnique(loanApplication.getPersonalInfo().getIdNumber())) {
+                return new ResponseEntity<>(new MessageResponse("DUPLICATE idNumber"), HttpStatus.CONFLICT);
+            }
+            LoanApplication createdLoanApplication = loanApplicationService.createNewLoanApplication(loanApplication);
+            return new ResponseEntity<>(createdLoanApplication, HttpStatus.CREATED);
+        }
+
+        LoanApplication createdLoanApplication = loanApplicationService.createNewLoanApplication(loanApplication);
         return new ResponseEntity<>(createdLoanApplication, HttpStatus.CREATED);
     }
 
@@ -80,5 +98,24 @@ public class LoanApplicationController {
     public ResponseEntity<List<InterestCalculationResponse>> decreaseInterestCalculation(@PathVariable Long id) {
         List<InterestCalculationResponse> basedInterestCalculationResponses = loanApplicationService.calculateDecreasedInterestMonthly(id);
         return new ResponseEntity<>(basedInterestCalculationResponses, HttpStatus.OK);
+    }
+
+    @GetMapping("/account/{id}")
+    public ResponseEntity<List<LoanApplication>> getApplicationByAccountInfoId(@PathVariable Long id) {
+        List<LoanApplication> applications = loanApplicationService.getLoanApplicationByAccountId(id)
+                .stream().toList();
+        return new ResponseEntity<>(applications, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<LoanApplication>> getApplicationbyUserId(@PathVariable Long id) {
+        Optional<AccountInfo> accountInfo = accountInfoService.getAccountInfoByUserId(id);
+        if (accountInfo.isPresent()) {
+            List<LoanApplication> applications = loanApplicationService.getLoanApplicationByAccountId(accountInfo.get().getId())
+                    .stream().toList();
+            return new ResponseEntity<>(applications, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
     }
 }

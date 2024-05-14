@@ -1,9 +1,6 @@
 package com.example.loanmanagement.service;
 
-import com.example.loanmanagement.entity.EInterestCalculator;
-import com.example.loanmanagement.entity.ELoanStatus;
-import com.example.loanmanagement.entity.LoanApplication;
-import com.example.loanmanagement.entity.LoanInfo;
+import com.example.loanmanagement.entity.*;
 import com.example.loanmanagement.model.payload.response.InterestCalculationResponse;
 import com.example.loanmanagement.repository.LoanApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LoanApplicationService {
@@ -31,7 +29,6 @@ public class LoanApplicationService {
     }
 
     public LoanApplication saveLoanApplication(LoanApplication loanApplication) {
-        loanApplication.setStatus(ELoanStatus.PENDING);
         return loanApplicationRepository.save(loanApplication);
     }
 
@@ -96,8 +93,9 @@ public class LoanApplicationService {
         // Calculate interest based on the provided loan information
         double based = this.calculateMonthlyPrincipalPayment(loanInfo);
         double interest = this.calculateMonthlyLoanInterest(loanInfo);
+        double remain = loanInfo.getLoanAmount() - based;
 
-        return new InterestCalculationResponse(based, interest);
+        return new InterestCalculationResponse(remain, based, interest);
     }
 
     private List<InterestCalculationResponse> calculateDecreased(double sotien, double laixuat, int thoihanInt) {
@@ -113,14 +111,14 @@ public class LoanApplicationService {
             double gocphaitra = 0;
             double sotienlaiphaitra = 0;
             if (i == 1) {
-                sotienlaiphaitra = sotien * laixuat;
+                sotienlaiphaitra = sotien * laixuat / thoihan;
                 gocphaitra = sotien / thoihan;
             } else if (i > 0) {
                 gocphaitra = sotien / thoihan;
-                sotienlaiphaitra = (sotien - (sotien / thoihan) * (i - 1)) * laixuat;
+                sotienlaiphaitra = (sotien - (gocphaitra) * (i - 1)) / thoihan * laixuat;
             }
 
-            icrs.add(new InterestCalculationResponse(gocphaitra, sotienlaiphaitra));
+            icrs.add(new InterestCalculationResponse(gocconlai, gocphaitra, sotienlaiphaitra));
 
             TongGocphaitra += gocphaitra;
             TongSotienlaiphaitra += sotienlaiphaitra;
@@ -136,5 +134,14 @@ public class LoanApplicationService {
         LoanInfo loanInfo = loanApplication.getLoanInfo();
 
         return this.calculateDecreased(loanInfo.getLoanAmount(), loanInfo.getLoanInterestRate(), loanInfo.getLoanTerm());
+    }
+
+    public List<LoanApplication> getLoanApplicationByAccountId(Long accountId) {
+        return loanApplicationRepository.findAllByAccountInfoId(accountId);
+    }
+
+    public LoanApplication createNewLoanApplication(LoanApplication loanApplication) {
+        loanApplication.setStatus(ELoanStatus.PENDING);
+        return loanApplicationRepository.save(loanApplication);
     }
 }

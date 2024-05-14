@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "account_info")
 public class AccountInfo {
@@ -13,26 +16,21 @@ public class AccountInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Size(max = 20)
     @Column(name = "account_number")
     private String accountNumber;
 
-    @NotBlank
     @Size(max = 20)
     @Column(name = "legal")
     private String legal;
 
-    @NotBlank
     @Email
     @Column(name = "email_address")
     private String emailAddress;
 
-    @NotBlank
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @NotBlank
     @Column(name = "address")
     private String address;
 
@@ -44,6 +42,9 @@ public class AccountInfo {
     @JoinColumn(name = "user_id")
 //    @JsonIgnore
     private User user;
+
+    @OneToMany(mappedBy = "accountInfo")
+    private Set<LoanApplication> loanApplications = new HashSet<>();
 
     public AccountInfo() {
     }
