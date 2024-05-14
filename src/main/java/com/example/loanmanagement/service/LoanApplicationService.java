@@ -40,6 +40,9 @@ public class LoanApplicationService {
         LoanApplication loanApplication = loanApplicationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Loan application not found with id: " + id));
         LoanInfo loanInfo = loanApplication.getLoanInfo();
+        if (loanInfo.getLoanInterestRate() < 0 || loanInfo.getLoanInterestRate() > 100) {
+            throw new RuntimeException("Interest rate is out of range (0, 100) %");
+        }
         // Calculate interest based on the provided loan information
         return (type == EInterestCalculator.SIMPLE) ? calculateSimpleInterest(loanInfo) : calculateCompoundInterest(loanInfo);
     }

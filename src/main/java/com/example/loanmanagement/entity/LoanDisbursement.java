@@ -20,24 +20,18 @@ public class LoanDisbursement {
     @Column(name = "disbursement_date", nullable = false)
     private Date disbursementDate;
 
-
     @Min(1)
     @Max(31)
     @Column(name = "monthly_repayment_day", nullable = false)
-    private int monthlyRepaymentDay = 10;
-
-//    @ManyToOne
-//    @JoinColumn(name = "disbursement_account_id", nullable = false)
-//    private AccountInfo disbursementAccount;
+    private int monthlyRepaymentDay;
 
     public LoanDisbursement() {
     }
 
-    public LoanDisbursement(LoanApplication loanApplication, Date disbursementDate, int monthlyRepaymentDay, AccountInfo disbursementAccount) {
+    public LoanDisbursement(LoanApplication loanApplication, Date disbursementDate, int monthlyRepaymentDay) {
         this.loanApplication = loanApplication;
         this.disbursementDate = disbursementDate;
         this.monthlyRepaymentDay = monthlyRepaymentDay;
-//        this.disbursementAccount = disbursementAccount;
     }
 
     public Long getId() {
@@ -71,12 +65,4 @@ public class LoanDisbursement {
     public void setMonthlyRepaymentDay(int monthlyRepaymentDay) {
         this.monthlyRepaymentDay = monthlyRepaymentDay;
     }
-
-//    public AccountInfo getDisbursementAccount() {
-//        return disbursementAccount;
-//    }
-//
-//    public void setDisbursementAccount(AccountInfo disbursementAccount) {
-//        this.disbursementAccount = disbursementAccount;
-//    }
 }

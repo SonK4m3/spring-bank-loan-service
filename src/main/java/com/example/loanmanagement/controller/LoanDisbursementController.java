@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.DateTimeException;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +21,19 @@ public class LoanDisbursementController {
 
     @PostMapping
     public ResponseEntity<LoanDisbursement> createLoanDisbursement(@RequestBody LoanDisbursement loanDisbursement) {
-        LoanDisbursement createdDisbursement = loanDisbursementService.createLoanDisbursement(loanDisbursement);
-        return new ResponseEntity<>(createdDisbursement, HttpStatus.CREATED);
+        if (loanDisbursement.getMonthlyRepaymentDay() < 1 || loanDisbursement.getMonthlyRepaymentDay() > 30) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            LoanDisbursement createdDisbursement = loanDisbursementService.createLoanDisbursement(loanDisbursement);
+            return new ResponseEntity<>(createdDisbursement, HttpStatus.CREATED);
+        } catch (Exception e) {
+            if (e instanceof DateTimeException) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 
     @GetMapping("/{id}")
@@ -38,7 +50,7 @@ public class LoanDisbursementController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LoanDisbursement> updateLoanDisbursement(@PathVariable Long id, @RequestBody LoanDisbursement updatedDisbursement) {
+    public ResponseEntity<LoanDisbursement> updateLoanDisbursement(@PathVariable Long id, @RequestBody LoanDisbursement updatedDisbursement) throws Exception {
         LoanDisbursement updated = loanDisbursementService.createLoanDisbursement(updatedDisbursement);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
